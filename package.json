@@ -1,0 +1,22 @@
+{
+  "name": "free-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yonggyu01/free-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yonggyu01/free-server/issues"
+  },
+  "homepage": "https://github.com/yonggyu01/free-server#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
