@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;
+        padding: 0;}
+        body{
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+        p{
+            transition: 1s all;
+            position: absolute;
+            transform: rotate();
+            display: inline;
+            width: 300px;
+            animation: infirotate 10s linear infinite;
+            font-size: 40px;
+            height: 300px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0);
+            border-radius: 50%;
+        }
+        span { 
+            position: absolute;
+    
+            transform: rotate(0deg);
+            transform-origin: 0 200px;
+        }
+        @keyframes infirotate{
+            from{
+                transform :rotate(0deg)
+            }
+            to{
+                transform: rotate(360deg);
+            }
+        }
+        input{
+            font-size: 30px;
+            width: 50%;
+            position: fixed;
+            top:10%
+        }
+        .boxbox{
+            top:50px;
+            position: absolute;
+            width: 500px;
+            height: 500px;
+           
+            transform-style: preserve-3d ;
+            /* 트랜스폼 스타일을 3d로 주는게 필수고  그담에 자식요소중에 하나는 뒤집어서 backface-visibility를 히든으로 주는게 필수임
+                트랜지션 스타일을 cubic으로 조절해서 넘기는것도 필수임
+                
+            */
+            transform: rotateY(0deg);
+            transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1.5);
+        }
+        .front{
+            width: 500px;
+            height: 500px;
+            position: absolute;
+            top : 0
+;
+backface-visibility: hidden;
+left:0;
+            
+             /* background: url(../diary.png) center 100%; */
+
+             
+        }
+        .front img{
+            width: 100%;
+          
+            /* backface-visibility: hidden; */
+
+        }
+        .back{
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+            width: 500px;
+            height: 500px;
+            position: absolute;
+            top : 0
+            
+;
+left:0;
+            background:url(../portal.png) center 100%;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" placeholder="여기에 내용 작성 후 엔터쳐">
+    
+    <p>오늘은 - 점심메뉴는 뭘 먹는게 좋을까?</p>
+
+    <div class="boxbox">
+        <div class="front"><img src="../동물, 곤충사진/Bear_PNG23454.webp" alt=""></div>
+        <div class="back"></div>
+
+    </div>
+    <script>
+        let inputa =document.querySelector('input')
+        inputa.onkeydown = function(e){
+            let p = document.querySelector('p')
+           let txt = e.code == 'Enter' ? p.innerHTML =  inputa.value  : ''
+           console.log(txt)
+           p.innerHTML = p.textContent.replace(/\S/g,"<span>$&</span>")
+
+        const span = document.querySelectorAll('span')
+        for(let i=1; i<span.length; i++){
+            span[i].style.transform = `rotate(${i*(360/span.length)}deg)`
+            let mousep = p.cloneNode(true)
+        }
+        }
+        let p = document.querySelector('p')
+
+        window.onmousemove =function(e){
+            
+            // let x = e.clientX
+            // let y = e.clientY
+            // p.style.left = x + 'px'
+            // p.style.top = y + 'px'
+        }
+        p.innerHTML = p.textContent.replace(/\S/g,"<span>$&</span>")
+        const span = document.querySelectorAll('span')
+
+        for(let i=1; i<span.length; i++){
+            span[i].style.transform = `rotate(${i*(360/span.length)}deg)`
+            let mousep = p.cloneNode(true)
+        }
+        p.onmouseover=function(e){
+            console.log('mousei')
+            let x = e.offsetX
+            if(x<=50){
+                p.style.transform = `rotatey(-20deg)`
+            }
+            if(x>=150){
+                p.style.transform = `rotatey(20deg)`
+            }
+        }
+        document.addEventListener('wheel',function(e){
+            console.log(e)
+            // e.preventDefault();
+            // console.log( -e.wheelDeltaY/2)
+            // window.scrollBy= `${-e.wheelDeltaY/2}px`
+
+        },{passive:false})
+</script>
+</body>
+</html>
+
