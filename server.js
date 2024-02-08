@@ -5,7 +5,12 @@ const bodyParser = require('body-parser');
 const dotenv =require('dotenv')
 dotenv.config()
 const fs= require('fs')
+let corsOptions = {
+  origin : '*'
 
+  // origin: 'https://engproject-ba2f9.firebaseapp.com',
+  // credentials: true
+}
 //npm install express 
 //npm install cors
 //npm install body-parser
@@ -13,11 +18,13 @@ const fs= require('fs')
 //> npm install @google/generative-ai
 //npm i dotenv @google/generative-ai
 
+let jsonfile = [
 
+]
 const app = express();
 const port = 3000;
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
@@ -36,15 +43,39 @@ app.get('/', async (req, res)=>{
 
 
 
-app.post('/api/account', (req,res)=>{
-  req.body.loginid
-  req.body.loginpass
-  console.log(  req.body.loginid,  req.body.loginpass)
-  res.send({
-      mid:'1111',
-      membername:'가입했어요?'
-  })
+app.post('/account', async (req,res)=>{
+    if( req.body?.newaccount== true){
+    let mydata ={
+    }
+        mydata.id = req.body?.id
+        mydata.passworld = req.body?.passworld
+        mydata.email = req.body?.email
+        mydata.name = req.body?.name
+        jsonfile.push(mydata)
+        filemake()
+        jsonfile.forEach((item,idx)=>{
+          if(item.id == req.body?.id){
+            res.send(jsonfile[idx])
+          } 
+        })
+  }
 })
+app.post('/account/:id', async (req,res)=>{
+  console.log(req.params.id)
+    jsonfile.forEach((x,idx)=>{
+      if(x.id==req.body.id){
+       res.send( jsonfile[idx])
+      }
+    })
+  
+
+})
+
+
+function filemake(){
+   let json = JSON.stringify(jsonfile)
+  fs.writeFileSync('loginfile.json',json)
+}
 
 
 app.post('/generate_easy', async (req, res) => {
