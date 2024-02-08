@@ -6,8 +6,8 @@ const dotenv =require('dotenv')
 dotenv.config()
 const fs= require('fs')
 let corsOptions = {
-  origin: 'https://engproject-ba2f9.firebaseapp.com',
-  credentials: true
+  origin: '*',
+  // credentials: true
 }
 //npm install express 
 //npm install cors
