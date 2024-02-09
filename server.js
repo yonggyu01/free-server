@@ -152,6 +152,65 @@ app.post('/generate_easy', async (req, res) => {
     }
 });
 
+app.post('/today', async (req, res) => {
+  try {
+      const MODEL_NAME = "gemini-pro";
+      const genAI = new GoogleGenerativeAI(process.env.api_key);
+      const safetySettings = [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+          },
+        ];
+
+      const generationConfig = {
+          temperature: 0.9,
+          topK: 1,
+          topP: 1,
+          maxOutputTokens: 2048,
+      };
+
+      const model = genAI.getGenerativeModel({ model: MODEL_NAME,safetySettings,generationConfig});
+      const parts = [
+          {text: "input: {\"weather\":\"sunny \",\"type\":\"sentence\",\"location\":\"jamwon-dong\"}"},
+          {text: "output: {\"result\":\"오늘은 날씨라 잠원동 인근 한강변으로 산책하시길 추천드립니다.\"}"},
+          {text: "input: {\"weather\":\"rain \",\"type\":\"sentence\",\"location\":\"jamsil\"}"},
+          {text: "output: {\"result\":\"오늘은 비가내려서 잠실역 롯데월드로 쇼핑가는걸 추천합니다.\"}"},
+          {text: "input: {\"weather\":\"cloudy \",\"type\":\"sentence\",\"location\":\"myungdong\"}"},
+          {text: "output: {\"result\":\"오늘은 안개가 많아 명동 쇼핑몰에서 쇼핑, 인근 맛집은 명동칼국수 집을 추천드립니다.\"}"}
+      ];
+
+      console.log(JSON.stringify(
+          req.body
+      ))
+      //질문 삽입
+      parts.push({ text: JSON.stringify(
+              req.body
+          )
+      })
+      parts.push({text:"output: "})
+      const result = await model.generateContent(parts);
+      const response = result.response;
+      console.log(response.text())
+      res.send(JSON.parse(response.text()));
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
