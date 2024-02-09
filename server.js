@@ -43,21 +43,21 @@ app.get('/', async (req, res)=>{
 
 app.post('/account', async (req,res)=>{
   console.log(req)
-  //   if( req.body?.newaccount== true){
-  //   let mydata ={
-  //   }
-  //       mydata.id = req.body?.id
-  //       mydata.passworld = req.body?.passworld
-  //       mydata.email = req.body?.email
-  //       mydata.name = req.body?.name
-  //       jsonfile.push(mydata)
-  //       filemake()
-  //       jsonfile.forEach((item,idx)=>{
-  //         if(item.id == req.body?.id){
-  //           res.send(jsonfile[idx])
-  //         } 
-  //       })
-  // }
+    if( req.body?.newaccount== true){
+  let mydata ={
+   }
+    mydata.id = req.body?.id
+       mydata.passworld = req.body?.passworld
+      mydata.email = req.body?.email
+       mydata.name = req.body?.name
+       jsonfile.push(mydata)
+//     filemake()
+      jsonfile.forEach((item,idx)=>{
+      if(item.id == req.body?.id){
+           res.send(jsonfile[idx])
+      } 
+       })
+ }
 })
 app.post('/account/:id', async (req,res)=>{
   console.log(req.params.id)
