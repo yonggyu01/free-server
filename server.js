@@ -184,12 +184,16 @@ app.post('/today', async (req, res) => {
 
       const model = genAI.getGenerativeModel({ model: MODEL_NAME,safetySettings,generationConfig});
       const parts = [
-          {text: "input: {\"weather\":\"sunny \",\"type\":\"sentence\",\"location\":\"jamwon-dong\"}"},
-          {text: "output: {\"result\":\"오늘은 날씨라 잠원동 인근 한강변으로 산책하시길 추천드립니다.\"}"},
-          {text: "input: {\"weather\":\"rain \",\"type\":\"sentence\",\"location\":\"jamsil\"}"},
-          {text: "output: {\"result\":\"오늘은 비가내려서 잠실역 롯데월드로 쇼핑가는걸 추천합니다.\"}"},
-          {text: "input: {\"weather\":\"cloudy \",\"type\":\"sentence\",\"location\":\"myungdong\"}"},
-          {text: "output: {\"result\":\"오늘은 안개가 많아 명동 쇼핑몰에서 쇼핑, 인근 맛집은 명동칼국수 집을 추천드립니다.\"}"}
+          {text: "input: {level\":4,\"type\":\"word\"}"},
+            {text: "output: {\"kor\": \"자신감 있는\", \"eng\": \"Confident\"}"},
+            {text: "input: {level\":5,\"type\":\"word\"}"},
+            {text: "output: {\"kor\": \"애매한, 모호한\", \"eng\": \"Ambiguous\"},"}
+          // {text: "input: {\"weather\":\"sunny \",\"type\":\"sentence\",\"location\":\"jamwon-dong\"}"},
+          // {text: "output: {\"result\":\"오늘은 날씨라 잠원동 인근 한강변으로 산책하시길 추천드립니다.\"}"},
+          // {text: "input: {\"weather\":\"rain \",\"type\":\"sentence\",\"location\":\"jamsil\"}"},
+          // {text: "output: {\"result\":\"오늘은 비가내려서 잠실역 롯데월드로 쇼핑가는걸 추천합니다.\"}"},
+          // {text: "input: {\"weather\":\"cloudy \",\"type\":\"sentence\",\"location\":\"myungdong\"}"},
+          // {text: "output: {\"result\":\"오늘은 안개가 많아 명동 쇼핑몰에서 쇼핑, 인근 맛집은 명동칼국수 집을 추천드립니다.\"}"}
       ];
 
       console.log(JSON.stringify(
