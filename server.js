@@ -30,7 +30,7 @@ app.get('/', async (req, res)=>{
   // let {type} = req.params
  if(res.status(200)){
  
-    return  res.send('<h1>제미니 에서 왔습니다.</h1>');
+    return  res.send('<h1>제미니 에서 왔습니다. 인식되나?</h1>');
 
  }else{
      res.status(404).send('disconnect');
