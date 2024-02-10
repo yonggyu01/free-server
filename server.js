@@ -54,9 +54,9 @@ app.post('/account', async (req,res)=>{
         filemake()
       res.send('회원가입 완료')
     
- }else if( req.body?.newaccount== false && ){
+ }else if( req.body?.newaccount== false ){
         jsonfile.forEach((item,idx)=>{
-      if(item.id == req.body?.id){
+      if(item.id == req.body?.id && item.passworld == req.body?.passworld){
            res.send(jsonfile[idx])
       } 
        })
