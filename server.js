@@ -64,11 +64,11 @@ app.post('/account', async (req,res)=>{
  }else{
   jsonfile.forEach((item,idx)=>{
     if(item.id == req.body?.id){
-         res.send(jsonfile[idx])
-    }else{
-      res.send({result : '아이디 및 비밀번호가 틀렸습니다.'})
-    } 
-     })
+        return res.send(jsonfile[idx])
+    }
+  })
+  res.send({result : '아이디 및 비밀번호가 틀렸습니다.'})
+  
  }
 })
 app.post('/account/:id', async (req,res)=>{
