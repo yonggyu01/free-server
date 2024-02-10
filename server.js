@@ -44,6 +44,10 @@ app.get('/', async (req, res)=>{
 app.post('/account', async (req,res)=>{
   console.log(req)
     if( req.body?.newaccount== true){
+       jsonfile.forEach((item,idx)=>{
+         if(item.id==req.body.id){
+           return res.send({result : '중복아이디입니다'})
+       })
   let mydata ={
    }
     mydata.id = req.body?.id
