@@ -47,7 +47,7 @@ app.post('/account', async (req,res)=>{
     if( req.body?.newaccount== true){
      for(let x of jsonfile){
        if(x.id == req.body.id){
-         return res.send(result : '이미 가입된 회원입니다')
+         return res.send({result : '이미 가입된 회원입니다'})
        }
      }
       
