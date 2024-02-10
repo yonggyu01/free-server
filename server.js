@@ -43,15 +43,22 @@ app.get('/', async (req, res)=>{
 
 app.post('/account', async (req,res)=>{
   console.log(req)
+
     if( req.body?.newaccount== true){
-  let mydata ={
+     for(let x of jsonfile){
+       if(x.id == req.body.id){
+         return res.send(result : '이미 가입된 회원입니다')
+       }
+     }
+      
+      let mydata ={
    }
     mydata.id = req.body?.id
        mydata.passworld = req.body?.passworld
       mydata.email = req.body?.email
        mydata.name = req.body?.name
        jsonfile.push(mydata)
-    filemake()
+   // filemake()
     res.send({result : '회원가입 성공'})
 
  }else{
