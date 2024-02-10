@@ -52,14 +52,14 @@ app.post('/account', async (req,res)=>{
        mydata.name = req.body?.name
        jsonfile.push(mydata)
     filemake()
-    res.send('회원가입 성공')
+    res.send({result :'회원가입 성공'})
 
  }else{
   jsonfile.forEach((item,idx)=>{
     if(item.id == req.body?.id && item.passworld == req.body?.passworld){
          res.send(jsonfile[idx])
     }else{
-      res.send('아이디 및 비밀번호가 틀렸습니다.')
+      res.send({result : '아이디 및 비밀번호가 틀렸습니다.'})
     } 
      })
  }
