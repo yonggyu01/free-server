@@ -30,7 +30,7 @@ app.get('/', async (req, res)=>{
   // let {type} = req.params
  if(res.status(200)){
  
-    return  res.send('<h1>제미니 에서 왔습니다. 인식되나?</h1>');
+    return  res.send('<h1>제미니 에서 왔습니다.</h1>');
 
  }else{
      res.status(404).send('disconnect');
@@ -48,19 +48,20 @@ app.post('/account', async (req,res)=>{
    }
     mydata.id = req.body?.id
        mydata.passworld = req.body?.passworld
-      // mydata.email = req.body?.email
+      mydata.email = req.body?.email
        mydata.name = req.body?.name
-       jsonfile.push(mydata)  
-        filemake()
-      res.send('회원가입 완료')
-    
- }else if( req.body?.newaccount== false ){
-        jsonfile.forEach((item,idx)=>{
-      if(item.id == req.body?.id && item.passworld == req.body?.passworld){
-           res.send(jsonfile[idx])
-      }else{
-        res.send('아이디 및 비밀번호가 틀렸습니다')
-       })
+       jsonfile.push(mydata)
+    filemake()
+    res.send('회원가입 성공')
+
+ }else{
+  jsonfile.forEach((item,idx)=>{
+    if(item.id == req.body?.id && item.passworld == req.body?.passworld){
+         res.send(jsonfile[idx])
+    }else{
+      res.send('아이디 및 비밀번호가 틀렸습니다.')
+    } 
+     })
  }
 })
 app.post('/account/:id', async (req,res)=>{
@@ -188,7 +189,6 @@ app.post('/today', async (req, res) => {
 
       const model = genAI.getGenerativeModel({ model: MODEL_NAME,safetySettings,generationConfig});
       const parts = [
-
           {text: "input: {\"weather\":\"sunny \",\"type\":\"sentence\",\"location\":\"jamwon-dong\"}"},
           {text: "output: {\"result\":\"오늘은 날씨라 잠원동 인근 한강변으로 산책하시길 추천드립니다.\"}"},
           {text: "input: {\"weather\":\"rain \",\"type\":\"sentence\",\"location\":\"jamsil\"}"},
