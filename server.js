@@ -48,11 +48,14 @@ app.post('/account', async (req,res)=>{
    }
     mydata.id = req.body?.id
        mydata.passworld = req.body?.passworld
-      mydata.email = req.body?.email
+      // mydata.email = req.body?.email
        mydata.name = req.body?.name
-       jsonfile.push(mydata)
-//     filemake()
-      jsonfile.forEach((item,idx)=>{
+       jsonfile.push(mydata)  
+        filemake()
+      res.send('회원가입 완료')
+    
+ }else if( req.body?.newaccount== false && ){
+        jsonfile.forEach((item,idx)=>{
       if(item.id == req.body?.id){
            res.send(jsonfile[idx])
       } 
