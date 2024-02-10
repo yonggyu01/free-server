@@ -58,7 +58,7 @@ app.post('/account', async (req,res)=>{
   jsonfile.forEach((item,idx)=>{
     if(item.id == req.body?.id){
          res.send(jsonfile[idx])
-    }else if(item.id != req.body?.id){
+    }else{
       res.send({result : '아이디 및 비밀번호가 틀렸습니다.'})
     } 
      })
