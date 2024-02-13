@@ -58,7 +58,7 @@ app.post('/account', async (req, res) => {
     mydata.email = req.body?.email
     mydata.name = req.body?.name
     jsonfile.push(mydata)
-    // filemake()
+    filemake()
     res.send({ result: '회원가입 성공' })
 
   } else {
@@ -136,28 +136,22 @@ app.post('/generate_easy', async (req, res) => {
 
     const model = genAI.getGenerativeModel({ model: MODEL_NAME, safetySettings, generationConfig });
     const parts = [
-      { text: "input: {\"level\":1,\"type\":\"sentence\"}" },
-      { text: "output: {\"kor\":\"나는 피자를 먹는 것을 좋아해요.\",\"eng\":\"I like to eat pizza\"}" },
-      { text: "input: {\"level\":2,\"type\":\"sentence\"}" },
-      { text: "output: {\"kor\":\"나의 고양이는 아주 귀여워요.\",\"eng\":\"My cat is very cute.\"}" },
-      { text: "input: {\"level\":3,\"type\":\"sentence\"}" },
-      { text: "output: {\"kor\":\"몇 시간 동안 공부한 끝에, 그녀는 드디어 그 개념을 이해했다.\",\"eng\":\"After studying for hours, she finally understood the concept.\"}" },
-      { text: "input: {\"level\"4,\"type\":\"sentence\"}" },
-      { text: "output: {\"kor\":\"역사 박물관은 다양한 시대의 유물로 가득 차 있습니다.\",\"eng\":\"The historical museum is filled with artifacts from different eras.\"}" },
-      { text: "input: {level\":1,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"행복한\", \"eng\": \"Happy\"}" },
-      { text: "input: {level\":1,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"사과\", \"eng\": \"Apple\"}" },
-      { text: "input: {level\":2,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"친구\", \"eng\": \"Friend\"}" },
-      { text: "input: {level\":2,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"아침식사\", \"eng\": \"Breakfast\"}" },
-      { text: "input: {level\":3,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"탐험하다\", \"eng\": \"Explore\"}" },
-      { text: "input: {level\":4,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"자신감 있는\", \"eng\": \"Confident\"}" },
-      { text: "input: {level\":5,\"type\":\"word\"}" },
-      { text: "output: {\"kor\": \"애매한, 모호한\", \"eng\": \"Ambiguous\"}," },
+      { text: "input: {\"quiz\":1,\"type\":\"sentence\"}" },
+      { text: "output: {\"kor\":\"비동기 처리 로직을 위해 콜백 함수를 연속으로 중첩하여 사용할 때 발생하는 문제입니다.\",\"hint\":\"ㅋㅂㅈㅇ \",\"result\":\"콜백지옥 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sentence\"}" },
+      { text: "output: {\"kor\":\"자본시장법상 '증권'을  분산원장(블록체인) 기술을 활용하여 토큰화 한 것\",\"hint\":\"ㅌㅋㅈㄱ \",\"result\":\"토큰증권 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sentence\"}" },
+      { text: "output: {\"kor\":\"남자 형제와 여자 형제를 아울러 이르는 말 \",\"hint\":\"ㅎㅈㅈㅁ \",\"result\":\"형제자매 \"}" },
+      { text: "input: {\"quiz\"1,\"type\":\"sentence\"}" },
+      { text: "output: {\"kor\":\"이 코인은 리플랩스 사가 개발한 블록체인이자 코인의 이름이다\",\"hint\":\"ㄹㅍ\",\"result\":\"리플 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sebtence\"}" },
+      { text: "output: {\"kor\": \"어떤 사물이 형성되는 시기나 그 기간 \",\"hint\":\"ㅎㅅㄱ\",\"result\":\"형성기 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sebtence\"}" },
+      { text: "output: {\"kor\": \"자기의 아들과 딸을 속되게 이르는 말 \",\"hint\":\"ㅈㅅㅅㄲ\",\"result\":\"자식새끼 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sebtence\"}" },
+      { text: "output: {\"kor\": \"여러 가지 색깔로 물들인 종이. 주로 어린이들의 공작용 접기나 오려 붙이기 따위에 쓴다 \",\"hint\":\"ㅅㅈㅇ\",\"result\":\"색종이 \"}" },
+      { text: "input: {\"quiz\":1,\"type\":\"sebtence\"}" },
+      { text: "output: {\"kor\": \"신칸트학파’와 같은 말 \",\"hint\":\"ㅅㅋㅌㅈㅇ\",\"result\":\"신칸트주의 \"}" },
     ];
 
     console.log(JSON.stringify(
@@ -213,7 +207,7 @@ app.post('/today', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: MODEL_NAME, safetySettings, generationConfig });
     const parts = [
       { text: "input: {\"weather\":\"sunny \",\"type\":\"sentence\",\"location\":\"jamwon-dong\"}" },
-      { text: "output: {\"result\":\"오늘은 날씨라 잠원동 인근 한강변으로 산책하시길 추천드립니다.\"}" },
+      { text: "output: {\"result\":\"오늘은 화창한날로 잠원동 근처에 있는 한강길을 따라 산책하시길 추천드립니다 \"}" },
       { text: "input: {\"weather\":\"rain \",\"type\":\"sentence\",\"location\":\"jamsil\"}" },
       { text: "output: {\"result\":\"오늘은 비가내려서 잠실역 롯데월드로 쇼핑가는걸 추천합니다.\"}" },
       { text: "input: {\"weather\":\"cloudy \",\"type\":\"sentence\",\"location\":\"myungdong\"}" },
