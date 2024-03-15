@@ -1,7 +1,9 @@
+const http = require("http");
 const express = require('express');
+const path = require("path");
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+require("dotenv").config();
 const dotenv = require('dotenv')
 dotenv.config()
 const fs = require('fs')
@@ -17,29 +19,231 @@ let corsOptions = {
 //npm i dotenv @google/generative-ai
 
 let jsonfile = [
+ {
+  id :'admin',
+  password : '1111',
+  name : "yong",
+  todolist : [],
+  cartlist:[]
+ },
 
 ]
+let todolist = [
+  {
+    id: 'randomnum0',
+    text : '여기에 내용기입하세요',
+    title:'',
+    create:'',
+    done : false,
+  }
+]
+let cartlist =[]
 const app = express();
 const port = 3000;
 
 app.use(cors(corsOptions));
-app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "docs")));
+app.use(express.json());
 
-app.get('/', async (req, res) => {
-  // let {type} = req.params
-  if (res.status(200)) {
+app.get("/*", (req, res) => {
+  res.set({
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Date: Date.now()
+  });
+  res.sendFile(path.join(__dirname, "docs", "index.html"));
+  });
 
-    return res.send('<h1>제미니 에서 왔습니다.</h1>');
+// app.get('/', async (req, res) => {
+//   // let {type} = req.params
+//   if (res.status(200)) {
+//     return res.send('<h1>제미니 에서 왔습니다.</h1>');
+//   } else {
+//     res.status(404).send('disconnect');
+//   }
+// })
+//   let userinfo={
 
-  } else {
-    res.status(404).send('disconnect');
+//   }
 
+// newtodolist 유저 아이디속에 데이터 넣고 빼는거로 다시 짜보자
+// 배열.splice(index,잘라낼양,잘라낸곳에 넣을 데이터) 이렇게 수정하면 될듯? 
+app.post('/todo', async (req, res) => {
+  if(req.body.userid && !req.body.id){
+    
+    userinfo=jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0]
+    console.log(userinfo,'재접속시 내용받아오는지')
+    // console.log(jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0],'스프레드')
+    //  console.log(userinfo,'재접속시 내용받아오는지')
+     res.send(userinfo.todolist)
+    }
+  else if(req.body?.mode == 'add' ){
+    // 필수값으로 userid 와 id를 보내야함      
+    let list = {
+      id: req.body.id,
+      text : req.body.text,
+      title:req.body.title,
+      create : req.body.create,
+      done : req.body.done
+    }
+    userinfo.todolist.unshift(list)
+    jsonfile.forEach((item, idx)=>{ 
+      if(item.id == req.body.userid){
+        jsonfile.splice(idx, 1, userinfo)
+      }  })
+      console.log(jsonfile,'내용추가')
+    res.send(userinfo.todolist)
+  }else if(req.body?.mode=='del'){
+      userinfo.todolist.forEach((item,idex,todo)=>{
+      if(item.id == req.body.id){
+        userinfo.todolist=userinfo.todolist.filter((item,idx)=>{return  idx != idex})
+        // console.log(userinfo.todolist)
+        jsonfile.forEach((item, idx)=>{ 
+          if(item.id == req.body.userid){
+          jsonfile.splice(idx, 1, userinfo)
+          }  })
+        }
+      })
+      res.send(userinfo.todolist)
+  }else if( req.body?.mode == 'update' ){
+    userinfo.todolist.forEach((item)=>{
+      if(item.id == req.body.id){
+        item.done = !item.done
+        item.create = req.body.create
+        jsonfile.forEach((item, idx)=>{ 
+          if(item.id == req.body.userid){
+          jsonfile.splice(idx, 1, userinfo)
+          }  })
+          // console.log(todolist)
+        }
+      })
+      res.send(userinfo.todolist)
+    }
+})
+app.post('/cart', async (req, res) => {
+  if(req.body.userid){
+    userinfo=jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0]
+    // console.log(jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0],'스프레드')
+     console.log(userinfo,'재접속시 내용받아오는지')
+     res.send(userinfo.cartlist)
+    }else if(req.body?.mode == 'add' ){
+      let list = {
+        id: req.body.id,
+        price : req.body.price,
+        src : req.body.src,
+        Quantity : req.body.Quantity,
+        title : req.body.title,
+      }
+      userinfo.cartlist.unshift(list)
+      console.log(userinfo.cartlist)
+    jsonfile.forEach((item, idx)=>{ 
+      if(item.id == req.body.userid){
+        jsonfile.splice(idx, 1, userinfo)
+      }  })
+    res.send(userinfo.cartlist)
+  }else if(req.body?.mode=='del'){
+    userinfo.cartlist.forEach((item,idex,todo)=>{
+      if(item.id == req.body.id){
+        userinfo.cartlist=userinfo.cartlist.filter((item,idx)=>{return  idx != idex})
+        console.log(userinfo.cartlist)
+        jsonfile.forEach((item, idx)=>{ 
+          if(item.id == req.body.userid){
+          jsonfile.splice(idx, 1, userinfo)
+          }  })
+        }
+      })
+      res.send(userinfo.cartlist)
+  }else if( req.body?.mode == 'update' ){
+    userinfo.cartlist.forEach((item,idex)=>{
+      if(item.id == req.body.id){
+        item.Quantity = req.body.Quantity
+        item.price = req.body.price
+        // console.log(req.body)
+        jsonfile.forEach((item, idx)=>{ 
+          if(item.id == req.body.userid){
+          jsonfile.splice(idx, 1, userinfo)
+          }  })
+          // console.log(cartlist)
+        }
+      })
+      res.send(userinfo.cartlist)
   }
-
 })
 
+// crud방법  객체에 mode에 add 추가 del삭제  update 변경 
+// app.post('/todo', async (req, res) => {
+//   if(!req.body.id){
+//     res.send(todolist)
+//   }else if(req.body?.mode == 'add' ){
+//     todolist.unshift(req.body)
+//     console.log(todolist)
+//     res.send(todolist)
+//   }else if(req.body?.mode=='del'){
+//     todolist.forEach((item,idex,todo)=>{
+//       if(item.id == req.body.id){
+//         todolist=todolist.filter((item,idx)=>{return  idx != idex})
+//         console.log(todolist)
+//        res.send(todolist)
+//       }
+//     })
+//   }else if( req.body?.mode == 'update' ){
+//     todolist.forEach((item)=>{
+//       if(item.id == req.body.id){
+//         item.done = !item.done
+//         console.log(req.body)
+//         res.send(todolist)
+//         console.log(todolist)
+//       }
+//     })
+//   }
+// })
+// app.post('/cart', async (req, res) => {
+//   if(!req.body.id){
+//     res.send(cartlist)
+//   }else if(req.body?.mode == 'add' ){
+//     cartlist.unshift(req.body)
+//     console.log(cartlist)
+//     res.send(cartlist)
+//   }else if(req.body?.mode=='del'){
+//     cartlist.forEach((item,idex,todo)=>{
+//       if(item.id == req.body.id){
+//         cartlist=cartlist.filter((item,idx)=>{return  idx != idex})
+//         console.log(cartlist)
+//        res.send(cartlist)
+//       }
+//     })
+//   }else if( req.body?.mode == 'update' ){
+//     cartlist.forEach((item,idex)=>{
+//       if(item.id == req.body.id){
+//         item.Quantity = req.body.Quantity
+//         item.price = req.body.price
+//         // console.log(req.body)
+//         res.send(cartlist)
+//         console.log(cartlist)
+//       }
+//     })
+//   }
+  
+// })
 
+// app.post('/userpoint', async(req,res)=>{
+//   jsonfile.filter((item,idx)=>{
+//    return  userinfo = item.id == req.body.userid
+//   })
+//     switch (req.body.mode){
+//       case 'add': 
+//       userinfo.point += req.body.point
+//       break;
+//       case 'del' :
+//         userinfo.point-= req.body.point
+//       break;
+//       case 'update' :
+
+//       break;
+//       default:
+//       userinfo.point = 0
+//     }
+// })
 
 app.post('/account', async (req, res) => {
   console.log(req)
@@ -54,9 +258,11 @@ app.post('/account', async (req, res) => {
     let mydata = {
     }
     mydata.id = req.body?.id
-    mydata.passworld = req.body?.passworld
-    mydata.email = req.body?.email
+    mydata.password = req.body?.password
+    // mydata.point = req.body?.point
     mydata.name = req.body?.name
+    mydata.todolist =[]
+    mydata.cartlist=[]
     jsonfile.push(mydata)
     filemake()
     res.send({ result: '회원가입 성공' })
@@ -65,11 +271,11 @@ app.post('/account', async (req, res) => {
     console.log('로그인 시도')
 
     jsonfile.forEach((item, idx) => {
-      if (item.id == req.body?.id&& item.passworld ==req.body?.passworld) {
+      if (item.id == req.body?.id&& item.password ==req.body?.password) {
         console.log('req body 보냄')
         user = {
           id :item.id,
-          passworld : item.passworld,
+          password : item.password,
           name : item.name
          }
 
@@ -234,10 +440,7 @@ app.post('/today', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+http.createServer(app).listen(port, () => {
+  console.log(`app listening at http://localhost:${port}`);
 });
-
-
-
 
