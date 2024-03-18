@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkbaby1"]=self["webpackChunkbaby1"]||[]).push([[624],{4624:function(e,n,o){o.r(n),o.d(n,{default:function(){return l}});var a=o(4108),u=o(7464);const r={class:"kakao"},s=(0,a.QD)("h1",null,"카카오 로그인",-1),t=[s];var c={__name:"kakaologin",setup(e){const n=(0,u.MJ)();return(0,a._O)((()=>{console.log(n.query.code),opener.kakaoreturn(n.query.code),setTimeout((()=>{window.close()}),200)})),(e,n)=>((0,a.Wz)(),(0,a.An)("div",r,t))}};const k=c;var l=k}}]);
+//# sourceMappingURL=624.a9e7d7ef.js.map
