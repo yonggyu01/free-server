@@ -247,7 +247,7 @@ app.post('/cart', async (req, res) => {
 // })
 
 app.post('/account', async (req, res) => {
-  console.log(req)
+  console.log(req.body)
   let user = {}
   if (req.body?.newaccount == true) {
     for (let x of jsonfile) {
