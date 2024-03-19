@@ -1,0 +1,28 @@
+{
+  "name": "free-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yonggyu01/free-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yonggyu01/free-server/issues"
+  },
+  "homepage": "https://github.com/yonggyu01/free-server#readme",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "socket.io": "^4.7.2"
+  }
+}
