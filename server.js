@@ -72,7 +72,7 @@ app.post('/todo', async (req, res) => {
   console.log('todo 요청',req.body)
   if(req.body.userid && !req.body.id){
     
-    userinfo=jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0]
+    userinfo=jsonfile.filter((item)=>{ return item.id == req.body.userid})[0]
     console.log(userinfo,'재접속시 내용받아오는지')
     // console.log(jsonfile.filter((item,idx)=>{ return item.id == req.body.userid})[0],'스프레드')
     //  console.log(userinfo,'재접속시 내용받아오는지')
